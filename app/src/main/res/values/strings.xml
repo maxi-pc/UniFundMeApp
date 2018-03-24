@@ -1,0 +1,102 @@
+<resources>
+    <string name="app_name">UniFundMe</string>
+    <string name="emailHint">Email Address</string>
+    <string name="userHint">Username</string>
+    <string name="passwordHint">Password</string>
+    <string name="registerTitle">User Registration</string>
+    <string name="registerBtn">Register</string>
+    <string name="CancelBtn">Cancel</string>
+    <string name="loginBtn">Login</string>
+    <string name="loginTitle">User Login</string>
+    <string name="ThemeBtn">Theme</string>
+    <string name="googleBtnHint">GoogleSignIn</string>
+    <string name="rdBtnFullTime">Full-Time Studies</string>
+    <string name="rdBtnPartTime">Part-Time Studies</string>
+    <string name="domesticRdBtn">Domestic Student</string>
+    <string name="internationalRdBtn">International Student</string>
+    <string name="aboriginal">Do you identify yourself as an Aboriginal Person?</string>
+    <string name="yesAbo">Yes</string>
+    <string name="noAbo">No</string>
+    <string name="gpaHint">Current GPA</string>
+    <string name="saveBtn">Save Profile</string>
+    <string-array name="provinces">
+        <item>Select Province</item>
+        <item>Alberta</item>
+        <item>British Columbia</item>
+        <item>Manitoba</item>
+        <item>New Brunswick</item>
+        <item>Newfoundland and Labrador</item>
+        <item>Nova Scotia</item>
+        <item>Ontario</item>
+        <item>Prince Edward Island</item>
+        <item>Quebec</item>
+        <item>Saskatchewan</item>
+    </string-array>
+    <string-array name="schools">
+        <item>Select School</item>
+        <item>Any School</item>
+        <item>Camosun College</item>
+        <item>College of New Caledonia</item>
+        <item>College of the Rockies</item>
+        <item>Douglas College</item>
+        <item>Langara College</item>
+        <item>North Island College</item>
+        <item> Northern Lights College</item>
+        <item> Northwest Community College</item>
+        <item> Okanagan College</item>
+        <item>Selkirk College</item>
+        <item>Vancouver Community College</item>
+        <item>Capilano University</item>
+        <item>Emily Carr University of Art and Design</item>
+        <item>Kwantlen Polytechnic University</item>
+        <item>Royal Roads University</item>
+        <item>Simon Fraser University</item>
+        <item>Thompson Rivers University</item>
+        <item>University of British Columbia</item>
+        <item>University of the Fraser Valley</item>
+        <item>University of Northern British Columbia</item>
+        <item>University of Victoria</item>
+        <item>Vancouver Island University</item>
+        <item>British Columbia Institute of Technology</item>
+        <item>Justice Institute of British Columbia</item>
+        <item>Nicola Valley Institute of Technology</item>
+    </string-array>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="mainTab">Main</string>
+    <string name="title_activity_settings">Settings</string>
+
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="versionLabel">Version:</string>
+    <string name="AwardsFoundTitle">Awards Found:</string>
+    <string name="awardSourceTitle">Source</string>
+    <string name="AwardTypeTitle">Type</string>
+    <string name="AwardNameTitle">Name</string>
+    <string name="AwardAmountTitle">Amount</string>
+    <string name="saveAwardsText">Save Selected Awards</string>
+    <string name="profileLabelText">User Profile</string>
+    <string name="SavedAwards">Saved Awards:</string>
+    <string name="deleteAwardBtnText">Delete Selected Awards</string>
+    <string name="ManualSearchLabel">Manual Search</string>
+    <string name="FindAwardBtnLabel">Find Awards</string>
+    <string name="NotaMemberText">Not a member?</string>
+    <string name="registerText">Register</string>
+    <string name="newsLabel"><![CDATA[News & Annoucements]]></string>
+    <string name="WelcomeTitle">Welcome,</string>
+    <string name="NewPasswordHint">New Password</string>
+    <string name="PasswordAgain">Password Again</string>
+</resources>

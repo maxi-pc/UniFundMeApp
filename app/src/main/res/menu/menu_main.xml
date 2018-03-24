@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Profile" android:id="@+id/profileItem"></item>
+    <item android:title="Quick Search" android:id="@+id/searchItem"></item>
+    <item
+        android:id="@+id/searchManuallyItem"
+        android:title="Search Manually"></item>
+    <item android:title="Saved Awards" android:id="@+id/savedAwardItem"></item>
+    <item android:title="Settings" android:id="@+id/settingsItem"></item>
+    <item android:title="Exit" android:id="@+id/exitItem"></item>
+</menu>

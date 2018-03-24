@@ -99,4 +99,8 @@
     <string name="WelcomeTitle">Welcome,</string>
     <string name="NewPasswordHint">New Password</string>
     <string name="PasswordAgain">Password Again</string>
+    <string name="SplashWelcomeTo">Welcome to UniFundMe</string>
+    <string name="SplashFree">Free access to: awards, scholarships, brusaries and grants.</string>
+    <string name="Save">Save your awards for easy access</string>
+    <string name="CheckBoxText">DON\'T SHOW AGAIN</string>
 </resources>

@@ -2,14 +2,11 @@ package com.example.maxi.unifundme;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -56,7 +53,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
-    void CreateSavedAward(AwardList newSavedAward, String currentUser){
+    void CreateSavedAward(Award newSavedAward, String currentUser){
         ContentValues savedAwardCV = new ContentValues();
         savedAwardCV.put("award_id", newSavedAward.getId());
         savedAwardCV.put("user_name", currentUser);
@@ -72,8 +69,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
-    ArrayList<AwardList> getSavedAwards(String[] userInput){
-        ArrayList<AwardList> awards = new ArrayList<>();
+
+    ArrayList<Award> getSavedAwards(String[] userInput){
+        ArrayList<Award> awards = new ArrayList<>();
 
         String sql ="SELECT award_id, award_source, award_type, award_name, award_amount FROM savedAwards WHERE user_name=?";
 
@@ -95,11 +93,38 @@ public class DatabaseManager extends SQLiteOpenHelper {
             Double amountColumn = c.getDouble(amountInt);
 
             // add result to award list
-            awards.add(new AwardList(idColumn, sourceColumn, typeColumn, schoolColumn, amountColumn));
+            awards.add(new Award(idColumn, sourceColumn, typeColumn, schoolColumn, amountColumn));
 
         }
         c.close();
         return awards;
+    }
+
+    ArrayList<News> getAllNews(){
+        ArrayList<News> news = new ArrayList<>();
+
+        String sql ="SELECT * FROM news";
+
+        Cursor c = db.rawQuery(sql, null);
+        while (c.moveToNext()) {
+            int idInt = c.getColumnIndex("news_id");
+            Integer idColumn = c.getInt(idInt);
+
+            int titleInt = c.getColumnIndex("news_title");
+            String titleColumn = c.getString(titleInt);
+
+            int contentInt = c.getColumnIndex("news_content");
+            String contentColumn = c.getString(contentInt);
+
+            int dateInt = c.getColumnIndex("news_date");
+            String dateColumn = c.getString(dateInt);
+
+            // add result to award list
+            news.add(new News(idColumn, titleColumn, contentColumn, dateColumn));
+
+        }
+        c.close();
+        return news;
     }
 
     void DeleteSavedAward(String[] awardInfo){
@@ -123,8 +148,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         }
     }
 
-    ArrayList<AwardList> getDefaultData(String[] userInput){
-        ArrayList<AwardList> awards = new ArrayList<>();
+    ArrayList<Award> getDefaultData(String[] userInput){
+        ArrayList<Award> awards = new ArrayList<>();
 
         String sql ="SELECT award_id, award_source, award_type, school_name, award_amount FROM awards AS A INNER JOIN schools AS S ON S.school_id = A.award_school_id WHERE award_province_id=? and award_school_id=? and award_studies=? and award_student_type=? and award_aboriginality=? and award_req_gpa<=?";
 
@@ -146,7 +171,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
             Double amountColumn = c.getDouble(amountInt);
 
             // add result to award list
-            awards.add(new AwardList(idColumn, sourceColumn, typeColumn, schoolColumn, amountColumn));
+            awards.add(new Award(idColumn, sourceColumn, typeColumn, schoolColumn, amountColumn));
 
         }
         c.close();
@@ -204,6 +229,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return accountInfo;
     }
 
+
+
     void UpdateAccount(User info){
         ContentValues accountCV = new ContentValues();
         accountCV.put("password",info.getPassword());
@@ -217,8 +244,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.update("users", accountCV, "user_id=" + info.getId().toString(), null);
     }
 
-    ArrayList<AwardList> getAnySchoolData(String[] userInput){
-        ArrayList<AwardList> awards = new ArrayList<>();
+    ArrayList<Award> getAnySchoolData(String[] userInput){
+        ArrayList<Award> awards = new ArrayList<>();
 
         Cursor anySchool = db.rawQuery("SELECT award_id, award_source, award_type, school_name, award_amount FROM awards AS A INNER JOIN schools AS S ON S.school_id = A.award_school_id WHERE award_province_id=? and award_studies=? and award_student_type=? and award_aboriginality=? and award_req_gpa<=?", userInput);
         try {
@@ -239,7 +266,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 Double amountColumn = anySchool.getDouble(amountInt);
 
                 // add result to award list
-                awards.add(new AwardList(idColumn, sourceColumn, typeColumn, schoolColumn, amountColumn));
+                awards.add(new Award(idColumn, sourceColumn, typeColumn, schoolColumn, amountColumn));
             }
         } catch (Exception ex){
             ex.getMessage();
@@ -274,6 +301,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 "\taward_name\tTEXT NOT NULL,\n" +
                 "\taward_amount\tNUMERIC NOT NULL);");
 
+        db.execSQL("CREATE TABLE IF NOT EXISTS `news` (\n" +
+                "\t`news_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`news_title`\tTEXT NOT NULL,\n" +
+                "\t`news_content`\tTEXT NOT NULL,\n" +
+                "\t`news_date`\tTEXT NOT NULL\n" +
+                ");");
+
         db.execSQL("CREATE TABLE IF NOT EXISTS awards (\n" +
                 "\taward_id\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
                 "\taward_school_id\tINTEGER NOT NULL,\n" +
@@ -286,6 +320,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 "\taward_student_type\tBLOB NOT NULL,\n" +
                 "\taward_aboriginality\tINTEGER NOT NULL,\n" +
                 "\taward_req_gpa\tNUMERIC NOT NULL);");
+
+        db.execSQL("INSERT INTO `news` VALUES (1,'News Title 1','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis turpis sagittis, tempor mi at, volutpat ligula. Sed sed efficitur felis. Etiam.','03-23-2018');");
+        db.execSQL("INSERT INTO `news` VALUES (2,'News Title 2','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis turpis sagittis, tempor mi at, volutpat ligula. Sed sed efficitur felis. Etiam.','03-23-2018');");
+        db.execSQL("INSERT INTO `news` VALUES (3,'News Title 3','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis turpis sagittis, tempor mi at, volutpat ligula. Sed sed efficitur felis. Etiam.','03-23-2018');");
+        db.execSQL("INSERT INTO `news` VALUES (4,'News Title 4','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis turpis sagittis, tempor mi at, volutpat ligula. Sed sed efficitur felis. Etiam.','03-23-2018');");
+        db.execSQL("INSERT INTO `news` VALUES (5,'News Title 5','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis turpis sagittis, tempor mi at, volutpat ligula. Sed sed efficitur felis. Etiam.','03-23-2018');");
+        db.execSQL("INSERT INTO `news` VALUES (6,'News Title 6','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis turpis sagittis, tempor mi at, volutpat ligula. Sed sed efficitur felis. Etiam.','03-23-2018');");
 
         String count = "SELECT count(*) FROM awards";
         Cursor mcursor = db.rawQuery(count, null);

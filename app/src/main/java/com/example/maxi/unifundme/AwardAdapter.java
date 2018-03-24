@@ -6,18 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class AwardListAdapter extends ArrayAdapter<AwardList> {
+public class AwardAdapter extends ArrayAdapter<Award> {
 
-    private ArrayList<AwardList> objects;
+    private ArrayList<Award> objects;
     private Context context;
 
-    public AwardListAdapter(Context context, ArrayList<AwardList> objects) {
+    public AwardAdapter(Context context, ArrayList<Award> objects) {
         super(context, R.layout.activity_view_data, objects);
         this.objects = objects;
         this.context = context;
@@ -42,7 +41,7 @@ public class AwardListAdapter extends ArrayAdapter<AwardList> {
         column1.setText(objects.get(position).getSource());
         column2.setText(objects.get(position).getType());
         column3.setText(objects.get(position).getName());
-        DecimalFormat myFormat = new DecimalFormat("$###,###.##");
+        DecimalFormat myFormat = new DecimalFormat("$###,###.00");
         column4.setText(myFormat.format(objects.get(position).getAmount()));
 
         // return rowView

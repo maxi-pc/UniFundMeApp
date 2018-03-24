@@ -173,6 +173,8 @@ public class RegisterActivity extends AppCompatActivity {
             User myAccount = new User(username, email, passwordOne);
             db.CreateUser(myAccount);
             Toast.makeText(RegisterActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            finish();
         }
     }
 }

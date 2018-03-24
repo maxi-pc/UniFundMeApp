@@ -130,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
             three = "";
         }
 
-        error = one + three;
         if(checkUser == true)
         {
             Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
@@ -145,17 +144,11 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, three, Toast.LENGTH_SHORT).show();
         }
         else{
-            // BEAM ME UP SCOTTY
             StoreSharedPrefs();
-          //  Toast.makeText(LoginActivity.this, "CAN DO LOGIN STUFF", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-           // QueryGe
-            passwordEditExit.getText().clear();
+            finish();
+         //   passwordEditExit.getText().clear();
         }
-
-
-
-   //     startActivity(new Intent(LoginActivity.this, MainActivity.class);
     }
 
     private void StoreSharedPrefs(){

@@ -4,7 +4,7 @@ package com.example.maxi.unifundme;
  * Created by Maxi on 2018-03-18.
  */
 
-public class AwardList {
+public class Award {
 
     private Integer id;
     private String source;
@@ -52,7 +52,7 @@ public class AwardList {
         this.amount = amount;
     }
 
-    public AwardList(Integer id, String source, String type, String name, double amount) {
+    public Award(Integer id, String source, String type, String name, double amount) {
         this.id = id;
         this.source = source;
         this.type = type;

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -18,20 +17,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class SavedAwardsActivity extends AppCompatActivity {
 
-    private ArrayList<AwardList> savedAwards = new ArrayList<>();
+    private ArrayList<Award> savedAwards = new ArrayList<>();
     private ListView awardsListView;
     private ArrayAdapter arrayAdapter;
     private DatabaseManager db;
     private String userName;
     private User userAccount;
     private Button deleteBtn;
-    private ArrayList<AwardList> currentSelectedAwards = new ArrayList<>();
+    private ArrayList<Award> currentSelectedAwards = new ArrayList<>();
     private TextView savedAwardCount;
     private TextView sourceCol;
     private TextView typeCol;
@@ -68,7 +66,7 @@ public class SavedAwardsActivity extends AppCompatActivity {
 
         awardsListView = (ListView)findViewById(R.id.lvSaved);
 
-        arrayAdapter = new AwardListAdapter(SavedAwardsActivity.this,savedAwards);
+        arrayAdapter = new AwardAdapter(SavedAwardsActivity.this,savedAwards);
         awardsListView.setAdapter(arrayAdapter);
 
 
@@ -226,13 +224,12 @@ public class SavedAwardsActivity extends AppCompatActivity {
                 }
 
             }
-            Toast.makeText(SavedAwardsActivity.this, "Removed: " + Integer.toString(checkedAwards.size()) + " awards", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SavedAwardsActivity.this, "Removed: " + Integer.toString(checkedAwards.size()) + " award(s)", Toast.LENGTH_SHORT).show();
             savedAwards.clear();
             savedAwards.addAll(db.getSavedAwards(new String[]{userName}));
             arrayAdapter.notifyDataSetChanged();
             savedAwardCount.setText(String.valueOf(savedAwards.size()));
             awardsListView.setAdapter(arrayAdapter);
-          //  Toast.makeText(SavedAwardsActivity.this, "Removed: " + checkedAwards.size() + " awards", Toast.LENGTH_SHORT).show();
         }
         else {
             // do nothing (or shake)

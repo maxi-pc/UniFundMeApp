@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView welcome;
     private DatabaseManager db;
     private TextView profileMessage;
+    private ArrayList<News> news = new ArrayList<>();
+    private ListView newsListView;
+    private ArrayAdapter arrayAdapter;
 
 
     //File dbFile = getDatabasePath("unifundme");
@@ -38,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
         welcome = (TextView)findViewById(R.id.welcome);
 
+        news.addAll(db.getAllNews());
+
+
+        newsListView = (ListView)findViewById(R.id.newsListView);
+
+        arrayAdapter = new NewsAdapter(MainActivity.this,news);
+        newsListView.setAdapter(arrayAdapter);
+
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         userName = prefs.getString("LoggedUserName", "");
 
@@ -48,26 +62,11 @@ public class MainActivity extends AppCompatActivity {
             profileMessage.setText("Please update your profile");
         }
 
-        profileMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                profileMessage.setText("");
-            }
-        });
+        profileMessage.setOnClickListener(view -> profileMessage.setText(""));
 
-        /*
-        String restoredText = prefs.getString("text", null);
-        if (restoredText != null) {
-            String name = prefs.getString("name", "No name defined");//"No name defined" is the default value.
-            int idName = prefs.getInt("idName", 0); //0 is the default value.
-
-
-        }
-        */
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the main_menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }

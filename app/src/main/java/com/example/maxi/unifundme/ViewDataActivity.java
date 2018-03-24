@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -25,8 +26,8 @@ import java.util.Collections;
 public class ViewDataActivity extends AppCompatActivity {
 
     private ArrayAdapter arrayAdapter;
-    private ArrayList<AwardList> awards = new ArrayList<>();
-    private ArrayList<AwardList> savedAwards =  new ArrayList<>();
+    private ArrayList<Award> awards = new ArrayList<>();
+    private ArrayList<Award> savedAwards =  new ArrayList<>();
     private TextView sourceCol;
     private TextView typeCol;
     private TextView nameCol;
@@ -37,22 +38,13 @@ public class ViewDataActivity extends AppCompatActivity {
    private boolean amountClicked = false;
    private String[] myQueryStrings = new String[6];
    private String[] myQueryStringsAnySchool = new String[5];
-   private String[] myQueryUserName = new String[1];
    private ListView awardsListView;
    private Button saveBtn;
    private User currentUser;
    private TextView awardsFound;
-   private String provinceInt;
-   private String schoolInt;
-   private String study;
-   private String locality;
-   private String aboriginality;
-   private String gpaVal;
    private String searchType;
    private DatabaseManager db;
    private String userName;
-
-   // private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +77,7 @@ public class ViewDataActivity extends AppCompatActivity {
 
 
 
-        arrayAdapter = new AwardListAdapter(ViewDataActivity.this,awards);
+        arrayAdapter = new AwardAdapter(ViewDataActivity.this,awards);
         awardsListView.setAdapter(arrayAdapter);
 
         // debugging  sent data
@@ -98,8 +90,6 @@ public class ViewDataActivity extends AppCompatActivity {
         else if(searchType.equals("auto")) {
             searchAuto();
         }
-
-        Toast.makeText(ViewDataActivity.this, searchType, Toast.LENGTH_SHORT).show();
 
        sourceCol = findViewById(R.id.columnSource);
        typeCol = findViewById(R.id.columnType);
@@ -321,6 +311,7 @@ public class ViewDataActivity extends AppCompatActivity {
                     int pos = checkedAwards.keyAt(i);
                     if(db.checkMatch("savedAwards", "award_id","user_name",new String[] {awards.get(pos).getId().toString(), userName})) {
                         db.CreateSavedAward(awards.get(pos), userName);
+                        Toast.makeText(ViewDataActivity.this, "Added: " + Integer.toString(checkedAwards.size()) + " award(s)", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
@@ -330,14 +321,6 @@ public class ViewDataActivity extends AppCompatActivity {
                 }
             }
         }
-/*
-        else if(checkedAwards == null) {
-            // do nothing
-            Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-            findViewById(R.id.viewDataScreen).startAnimation(shake);
-        }
-        */
-
         else{
             Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
             findViewById(R.id.viewDataScreen).startAnimation(shake);

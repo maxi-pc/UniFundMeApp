@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         news.addAll(db.getAllNews());
 
-
         newsListView = (ListView)findViewById(R.id.newsListView);
 
         arrayAdapter = new NewsAdapter(MainActivity.this,news);

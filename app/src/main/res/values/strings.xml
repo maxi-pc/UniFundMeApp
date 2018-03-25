@@ -66,22 +66,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="mainTab">Main</string>
     <string name="title_activity_settings">Settings</string>
-
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
-    <string name="versionLabel">Version:</string>
+    <string name="versionLabel">Build Version:</string>
     <string name="AwardsFoundTitle">Awards Found:</string>
     <string name="awardSourceTitle">Source</string>
     <string name="AwardTypeTitle">Type</string>
@@ -103,4 +88,8 @@
     <string name="SplashFree">Free access to: awards, scholarships, brusaries and grants.</string>
     <string name="Save">Save your awards for easy access</string>
     <string name="CheckBoxText">DON\'T SHOW AGAIN</string>
+    <string name="ThemeSettingTitleLabel">Theme Settings</string>
+    <string name="DayMode">Light</string>
+    <string name="NightMode">Dark</string>
+    <string name="AlertsSwitch">Alerts</string>
 </resources>

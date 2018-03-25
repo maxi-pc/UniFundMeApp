@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,17 +53,25 @@ public class ProfileActivity extends AppCompatActivity {
     private String[] queryStrings = new String[6];
     private Boolean passMatch = true;
     private String userName;
+    private String themePref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = prefs.getString("ThemePrefs", "Light");
+        userName = prefs.getString("LoggedUserName", "");
+
+        if(themePref.equals("Light"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else if(themePref.equals("Dark"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
         setContentView(R.layout.activity_profile);
 
         db = new DatabaseManager(this);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        userName = prefs.getString("LoggedUserName", "");
 
         profileInfo = db.getUserInfo(new String[] {userName});
 
@@ -72,14 +81,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         saveProfileBtn = (Button)findViewById(R.id.saveBtnProfile);
 
-        saveProfileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    validationCheck();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        saveProfileBtn.setOnClickListener(view -> {
+            try {
+                validationCheck();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }

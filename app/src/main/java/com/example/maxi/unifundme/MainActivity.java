@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<News> news = new ArrayList<>();
     private ListView newsListView;
     private ArrayAdapter arrayAdapter;
+    private String themePref;
 
 
     //File dbFile = getDatabasePath("unifundme");
@@ -36,6 +37,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = prefs.getString("ThemePrefs", "Light");
+
+        if(themePref.equals("Light"))
+        {
+
+        }
+        else if(themePref.equals("Dark")){
+            setTheme(android.R.style.Theme_Material);
+        }
+
+        setContentView(R.layout.activity_setting);
+
+        if(themePref.equals("Dark"))
+            getActionBar().hide();
+
         setContentView(R.layout.activity_main);
 
         profileMessage = (TextView)findViewById(R.id.profileAlertMessage);
@@ -51,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter = new NewsAdapter(MainActivity.this,news);
         newsListView.setAdapter(arrayAdapter);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         userName = prefs.getString("LoggedUserName", "");
 
         userAccount = db.getUserInfo(new String[] {userName});
@@ -62,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         profileMessage.setOnClickListener(view -> profileMessage.setText(""));
+        
 
     }
     @Override

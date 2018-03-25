@@ -24,7 +24,6 @@
                 android:layout_margin="3dp"
                 android:text="@string/newsLabel"
                 android:textAlignment="center"
-                android:textColor="#000"
                 android:textSize="20sp" />
 
         </LinearLayout>

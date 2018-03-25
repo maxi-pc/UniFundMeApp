@@ -3,51 +3,96 @@ package com.example.maxi.unifundme;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SettingActivity extends AppCompatActivity {
     // CompoundButton.OnCheckedChangeListener
 
     Switch themeSwitch;
+    private TextView gitVersion;
+    private String themePref;
+    private RadioButton lightModeRdBtn;
+    private RadioButton nightModeRdBtn;
+
+    //private Boolean isChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = prefs.getString("ThemePrefs", "Light");
+
+        if(themePref.equals("Light"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else if(themePref.equals("Dark"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
         setContentView(R.layout.activity_setting);
 
+        lightModeRdBtn = (RadioButton)findViewById(R.id.settingsRdBtnLight);
+        nightModeRdBtn = (RadioButton)findViewById(R.id.settingsRdBtnDark);
         themeSwitch = findViewById(R.id.themeSwitch);
 
-      //  themeSwitch.setOnCheckedChangeListener(this);
+        if(themePref.equals("Light"))
+            lightModeRdBtn.setChecked(true);
+        else if(themePref.equals("Dark"))
+            nightModeRdBtn.setChecked(true);
+
+
+
+
+
+        gitVersion = (TextView)findViewById(R.id.versionNumberLabel);
+
+        gitVersion.setText(Integer.toString(BuildConfig.VERSION_CODE) +"."+ BuildConfig.GitHash);
+
+        themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if(isChecked == true){
+                Toast.makeText(SettingActivity.this, "Alert sounds enabled", Toast.LENGTH_SHORT).show();
+                // enable sounds
+            }
+            else {
+                Toast.makeText(SettingActivity.this, "Alert sounds disabled", Toast.LENGTH_SHORT).show();
+                // disable sounds
+            }
+        });
+
+        lightModeRdBtn.setOnClickListener(view -> {
+            themePref = "Light";
+            StoreSharedPrefs();
+            recreate();
+        });
+
+        nightModeRdBtn.setOnClickListener(view -> {
+            themePref = "Dark";
+            StoreSharedPrefs();
+            recreate();
+        });
     }
 
-    /*
-    @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if(themeSwitch.isChecked())
-        {
-            setTheme(android.R.style.Theme_Light);
-         //   setContentView(R.layout.activity_setting);
-            recreate();
-
-
-            Toast.makeText(SettingActivity.this, "yes", Toast.LENGTH_LONG).show();
-
-        }
-        else{
-            setTheme(android.R.style.Theme_Material);
-        //    setContentView(R.layout.activity_setting);
-            recreate();
-            Toast.makeText(SettingActivity.this, "no", Toast.LENGTH_LONG).show();
-        }
+    private void StoreSharedPrefs(){
+        final SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("ThemePrefs", themePref);
+        editor.commit();
     }
-    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,6 +148,4 @@ public class SettingActivity extends AppCompatActivity {
 
         return true;
     }
-
-    // Switch themeSwtch = (Switch)findViewById(R.id.themeSwitch);
 }

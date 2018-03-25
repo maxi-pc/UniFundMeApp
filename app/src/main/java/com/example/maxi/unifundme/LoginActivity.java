@@ -9,6 +9,7 @@ import android.media.Image;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,16 +37,25 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseManager db;
     private ImageView googleBtn;
     private ImageView facebookBtn;
-    public String userName;
+    private String userName;
+    private String themePref;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = prefs.getString("ThemePrefs", "Light");
         userName = prefs.getString("LoggedUserName", "");
+
+        if(themePref.equals("Light"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else if(themePref.equals("Dark"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        setContentView(R.layout.activity_login);
 
         usernameEditText = (EditText)findViewById(R.id.usernameLoginEditText);
         passwordEditExit = (EditText)findViewById(R.id.passwordLoginEditText);
@@ -71,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         facebookBtn.setOnClickListener(view -> Toast.makeText(LoginActivity.this, "Work in progress :)", Toast.LENGTH_SHORT).show());
     }
 
+    /*
     public void validationCheck()throws IOException {
 
         username = usernameEditText.getText().toString();
@@ -104,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
+    */
 
     void checkLogin()
     {

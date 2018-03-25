@@ -6,6 +6,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,15 +46,26 @@ public class ViewDataActivity extends AppCompatActivity {
    private String searchType;
    private DatabaseManager db;
    private String userName;
+   private String themePref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_data);
-        db = new DatabaseManager(this);
 
+        // change theme based on user settings
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = prefs.getString("ThemePrefs", "Light");
         userName = prefs.getString("LoggedUserName", "");
+
+        if(themePref.equals("Light"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else if(themePref.equals("Dark"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        setContentView(R.layout.activity_view_data);
+
+        // create instance of DB manager
+        db = new DatabaseManager(this);
 
         savedAwards = db.getSavedAwards(new String[]{userName});
 
@@ -79,9 +91,6 @@ public class ViewDataActivity extends AppCompatActivity {
 
         arrayAdapter = new AwardAdapter(ViewDataActivity.this,awards);
         awardsListView.setAdapter(arrayAdapter);
-
-        // debugging  sent data
-       //Toast.makeText(ViewDataActivity.this, myQueryStrings[0] + " " + myQueryStrings[1] + " " + myQueryStrings[2] + " " + myQueryStrings[3] + " " + myQueryStrings[4] + " " + myQueryStrings[5], Toast.LENGTH_LONG).show();
 
         if(searchType.equals("manual")) {
             searchManual();
@@ -231,10 +240,6 @@ public class ViewDataActivity extends AppCompatActivity {
         }
 
         return true;
-    }
-
-    private void CheckSavedAwards(){
-
     }
 
     private void searchManual() {

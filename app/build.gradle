@@ -1,5 +1,13 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.github.alexfu.androidautoversion'
+
+def getGitHash = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
 
 android {
     compileSdkVersion 26
@@ -7,6 +15,9 @@ android {
         applicationId "com.example.maxi.unifundme"
         minSdkVersion 15
         targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+		buildConfigField "String", "GitHash", "\"${getGitHash()}\""
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

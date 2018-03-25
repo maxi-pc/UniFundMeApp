@@ -6,6 +6,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,17 +40,25 @@ public class SavedAwardsActivity extends AppCompatActivity {
     private boolean typeClicked = false;
     private boolean nameClicked = false;
     private boolean amountClicked = false;
+    private String themePref;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = prefs.getString("ThemePrefs", "Light");
+        userName = prefs.getString("LoggedUserName", "");
+
+        if(themePref.equals("Light"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else if(themePref.equals("Dark"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
         setContentView(R.layout.activity_saved_awards);
 
         deleteBtn = (Button)findViewById(R.id.deleteAwardsBtn);
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        userName = prefs.getString("LoggedUserName", "");
 
         db = new DatabaseManager(this);
 

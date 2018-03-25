@@ -1,8 +1,11 @@
 package com.example.maxi.unifundme;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
@@ -33,12 +36,22 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText passwordTwoEditEdit;
     private String passwordOne;
     private String passwordTwo;
+    private String themePref;
 
     private String[] userInput = new String[1];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // change theme based on user settings
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        themePref = prefs.getString("ThemePrefs", "Light");
+        if(themePref.equals("Light"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else if(themePref.equals("Dark"))
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
         setContentView(R.layout.activity_register);
 
         db = new DatabaseManager(this);

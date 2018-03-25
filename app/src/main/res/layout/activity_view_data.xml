@@ -24,7 +24,6 @@ android:layout_height="match_parent">
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/AwardsFoundTitle"
-            android:textColor="#000"
             android:textSize="20sp" />
 
         <TextView

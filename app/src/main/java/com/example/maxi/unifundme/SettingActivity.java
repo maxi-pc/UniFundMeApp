@@ -17,32 +17,19 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
     // CompoundButton.OnCheckedChangeListener
 
     Switch themeSwitch;
     private TextView gitVersion;
-    private String themePref;
     private RadioButton lightModeRdBtn;
     private RadioButton nightModeRdBtn;
 
     //private Boolean isChecked;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
-
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = prefs.getString("ThemePrefs", "Light");
-
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        setContentView(R.layout.activity_setting);
+        super.onCreate(savedInstanceState, R.layout.activity_setting);
 
         lightModeRdBtn = (RadioButton)findViewById(R.id.settingsRdBtnLight);
         nightModeRdBtn = (RadioButton)findViewById(R.id.settingsRdBtnDark);
@@ -52,10 +39,6 @@ public class SettingActivity extends AppCompatActivity {
             lightModeRdBtn.setChecked(true);
         else if(themePref.equals("Dark"))
             nightModeRdBtn.setChecked(true);
-
-
-
-
 
         gitVersion = (TextView)findViewById(R.id.versionNumberLabel);
 
@@ -74,78 +57,17 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         lightModeRdBtn.setOnClickListener(view -> {
+            Toast.makeText(SettingActivity.this, "Theme set to Light Mode", Toast.LENGTH_SHORT).show();
             themePref = "Light";
             StoreSharedPrefs();
             recreate();
         });
 
         nightModeRdBtn.setOnClickListener(view -> {
+            Toast.makeText(SettingActivity.this, "Theme set to Night Mode", Toast.LENGTH_SHORT).show();
             themePref = "Dark";
             StoreSharedPrefs();
             recreate();
         });
-    }
-
-    private void StoreSharedPrefs(){
-        final SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("ThemePrefs", themePref);
-        editor.commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the main_menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        DatabaseManager db = new DatabaseManager(this);
-        User currentUser;
-        String userName;
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        userName = prefs.getString("LoggedUserName", "");
-
-        currentUser = db.getUserInfo(new String[] {userName});
-
-        switch(item.getItemId()) {
-            case R.id.profileItem:
-                startActivity(new Intent(this, ProfileActivity.class));
-                break;
-            case R.id.searchItem:
-                if(currentUser.getProfileSet() == 0)
-                {
-                    Toast.makeText(this, "Must setup account for this feature", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Intent myIntent = new Intent(this, ViewDataActivity.class);
-                    myIntent.putExtra("searchType", "auto");
-                    startActivity(myIntent);
-                }
-                break;
-            case R.id.searchManuallyItem:
-                startActivity(new Intent(this, ManualSearchActivity.class));
-                break;
-            case R.id.savedAwardItem:
-                startActivity(new Intent(this, SavedAwardsActivity.class));
-                break;
-            case R.id.settingsItem:
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
-            case R.id.exitItem:
-                finish();
-                moveTaskToBack(true);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-        return true;
     }
 }

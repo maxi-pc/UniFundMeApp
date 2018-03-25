@@ -3,6 +3,7 @@ package com.example.maxi.unifundme;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -81,6 +82,8 @@ public class SavedAwardsActivity extends AppCompatActivity {
 
         deleteBtn.setOnClickListener(view -> {
             GetCurrentSelectedItems();
+            deleteBtn.setEnabled(false);
+            new Handler().postDelayed(() -> deleteBtn.setEnabled(true),5000);
         });
 
         sourceCol = findViewById(R.id.savedColumnSource);
@@ -175,33 +178,9 @@ public class SavedAwardsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        DatabaseManager db = new DatabaseManager(this);
-        User currentUser;
-        String userName;
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        userName = prefs.getString("LoggedUserName", "");
-
-        currentUser = db.getUserInfo(new String[] {userName});
-
         switch(item.getItemId()) {
             case R.id.profileItem:
                 startActivity(new Intent(this, ProfileActivity.class));
-                break;
-            case R.id.searchItem:
-                if(currentUser.getProfileSet() == 0)
-                {
-                    Toast.makeText(this, "Must setup account for this feature", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Intent myIntent = new Intent(this, ViewDataActivity.class);
-                    myIntent.putExtra("searchType", "auto");
-                    startActivity(myIntent);
-                }
-                break;
-            case R.id.searchManuallyItem:
-                startActivity(new Intent(this, ManualSearchActivity.class));
                 break;
             case R.id.savedAwardItem:
                 startActivity(new Intent(this, SavedAwardsActivity.class));

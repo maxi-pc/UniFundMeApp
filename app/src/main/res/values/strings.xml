@@ -92,4 +92,11 @@
     <string name="DayMode">Light</string>
     <string name="NightMode">Dark</string>
     <string name="AlertsSwitch">Alerts</string>
+    <string name="title_activity_left_menu">LeftMenuActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="QuickSearch">Quick Search</string>
+    <string name="ProfileText">Profile</string>
+    <string name="ExitLabel">Exit</string>
 </resources>

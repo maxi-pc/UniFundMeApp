@@ -2,6 +2,7 @@ package com.example.maxi.unifundme;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,6 +66,9 @@ public class RegisterActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        registerBtn.setEnabled(false);
+        new Handler().postDelayed(() -> registerBtn.setEnabled(true),5000);
     });
 
     cancelBtn.setOnClickListener(view -> {
@@ -93,10 +97,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         emailText = (EditText)findViewById(R.id.emaiEditText);
         userText = (EditText)findViewById(R.id.usernameEditText);
-   //     passText = (EditText)findViewById(R.id.passwordEditText);
         username = userText.getText().toString();
         email = emailText.getText().toString();
-      //  password = passText.getText().toString();
 
         passwordOneEditText = (EditText) findViewById(R.id.passwordEditText);
         passwordTwoEditEdit = (EditText) findViewById(R.id.passwordEditTextTwo);

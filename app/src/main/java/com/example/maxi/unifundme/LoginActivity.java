@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,51 +72,27 @@ public class LoginActivity extends AppCompatActivity {
 
         loginBtn = (Button) findViewById(R.id.loginBtn);
 
-        loginBtn.setOnClickListener(view -> checkLogin());
+        loginBtn.setOnClickListener(view -> {
+            checkLogin();
+            loginBtn.setEnabled(false);
+            new Handler().postDelayed(() -> loginBtn.setEnabled(true),5000);
+        });
 
         googleBtn = (ImageView)findViewById(R.id.googleLogBtn);
         facebookBtn = (ImageView)findViewById(R.id.facebookLogBtn);
 
-        googleBtn.setOnClickListener(view -> Toast.makeText(LoginActivity.this, "Work in progress :)", Toast.LENGTH_SHORT).show());
+        googleBtn.setOnClickListener(view -> {
+            Toast.makeText(LoginActivity.this, "Work in progress :)", Toast.LENGTH_SHORT).show();
+            Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            findViewById(R.id.loginScreen).startAnimation(shake);
+        });
 
-        facebookBtn.setOnClickListener(view -> Toast.makeText(LoginActivity.this, "Work in progress :)", Toast.LENGTH_SHORT).show());
+        facebookBtn.setOnClickListener(view -> {
+            Toast.makeText(LoginActivity.this, "Work in progress :)", Toast.LENGTH_SHORT).show();
+            Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            findViewById(R.id.loginScreen).startAnimation(shake);
+        });
     }
-
-    /*
-    public void validationCheck()throws IOException {
-
-        username = usernameEditText.getText().toString();
-        password = passwordEditExit.getText().toString();
-
-        String two, three, error;
-
-        if (username.isEmpty() || username.length() <= 5) {
-            two = "Username Check (char min 6)\n";
-        } else {
-            two = "";
-        }
-        if (password.isEmpty() || password.length() <= 5) {
-            three = "Password  Check (char min 6)\n";
-        } else {
-            three = "";
-        }
-
-        error = two + three;
-        if (username.isEmpty() ||username.length()  <= 5 ||
-                password.isEmpty() || password.length() <= 5) {
-
-            Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
-
-        }
-        else {
-
-            //   setValuesOfSearch();
-            checkLogin();
-            // Toast.makeText(RegisterActivity.this, "SUCCESS!", Toast.LENGTH_LONG).show();
-
-        }
-    }
-    */
 
     void checkLogin()
     {

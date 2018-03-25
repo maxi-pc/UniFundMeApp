@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <!--
+                Add menu items here
+                Menu items with icon and Title
+        -->
+        <item
+            android:id="@+id/left_news"
+            android:checkable="false"
+            android:icon="@drawable/homeicon"
+            android:title="@string/newsLabel" />
+        <item
+            android:id="@+id/left_quick_search"
+            android:checkable="false"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="@string/QuickSearch" />
+        <item
+            android:id="@+id/left_manual_search"
+            android:checkable="false"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/ManualSearchLabel" />
+    </group>
+</menu>

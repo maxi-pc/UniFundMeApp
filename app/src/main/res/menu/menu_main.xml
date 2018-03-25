@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:icon="@drawable/threedots"
+    app:showAsAction="always">
 
-    <item android:title="Profile" android:id="@+id/profileItem"></item>
-    <item android:title="Quick Search" android:id="@+id/searchItem"></item>
     <item
-        android:id="@+id/searchManuallyItem"
-        android:title="Search Manually"></item>
-    <item android:title="Saved Awards" android:id="@+id/savedAwardItem"></item>
-    <item android:title="Settings" android:id="@+id/settingsItem"></item>
-    <item android:title="Exit" android:id="@+id/exitItem"></item>
+        android:id="@+id/profileItem"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:title="@string/ProfileText"></item>
+    <item
+        android:id="@+id/savedAwardItem"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/SavedAwards"></item>
+    <item
+        android:id="@+id/settingsItem"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/title_activity_settings"></item>
+    <item
+        android:id="@+id/exitItem"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@string/ExitLabel"></item>
 </menu>

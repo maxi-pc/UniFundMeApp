@@ -1,16 +1,10 @@
 package com.example.maxi.unifundme;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.SparseBooleanArray;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -18,20 +12,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SavedAwardsActivity extends AppCompatActivity {
+public class SavedAwardsActivity extends BaseActivity {
 
     private ArrayList<Award> savedAwards = new ArrayList<>();
     private ListView awardsListView;
     private ArrayAdapter arrayAdapter;
-    private DatabaseManager db;
-    private String userName;
-    private User userAccount;
     private Button deleteBtn;
-    private ArrayList<Award> currentSelectedAwards = new ArrayList<>();
     private TextView savedAwardCount;
     private TextView sourceCol;
     private TextView typeCol;
@@ -41,30 +30,13 @@ public class SavedAwardsActivity extends AppCompatActivity {
     private boolean typeClicked = false;
     private boolean nameClicked = false;
     private boolean amountClicked = false;
-    private String themePref;
 
+    @SuppressLint("MissingSuperCall")
+    protected final void onCreate(Bundle savedInstanceState) {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = prefs.getString("ThemePrefs", "Light");
-        userName = prefs.getString("LoggedUserName", "");
-
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        setContentView(R.layout.activity_saved_awards);
+        super.onCreate(savedInstanceState, R.layout.activity_saved_awards);
 
         deleteBtn = (Button)findViewById(R.id.deleteAwardsBtn);
-
-        db = new DatabaseManager(this);
-
-        userAccount = db.getUserInfo(new String[] {userName});
-
 
         //savedAwards.clear();
 
@@ -166,37 +138,6 @@ public class SavedAwardsActivity extends AppCompatActivity {
             }
 
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the main_menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch(item.getItemId()) {
-            case R.id.profileItem:
-                startActivity(new Intent(this, ProfileActivity.class));
-                break;
-            case R.id.savedAwardItem:
-                startActivity(new Intent(this, SavedAwardsActivity.class));
-                break;
-            case R.id.settingsItem:
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
-            case R.id.exitItem:
-                finish();
-                moveTaskToBack(true);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-        return true;
     }
 
     public void GetCurrentSelectedItems() {

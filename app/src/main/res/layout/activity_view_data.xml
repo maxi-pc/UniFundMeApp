@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/viewDataScreen"
 android:layout_width="match_parent"
 android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
 <!-- Header aligned to top -->
 <LinearLayout
     android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
+    android:layout_below="@id/toolbar"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -28,7 +40,7 @@ android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/awardsFoundTxtView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
@@ -50,7 +62,7 @@ android:layout_height="match_parent">
             android:clickable="true"
             android:text="@string/awardSourceTitle"
             android:textAlignment="center"
-            android:textStyle="bold" />
+            android:textStyle="bold" android:focusable="true"/>
 
         <TextView
             android:id="@+id/columnType"
@@ -60,7 +72,7 @@ android:layout_height="match_parent">
             android:clickable="true"
             android:text="@string/AwardTypeTitle"
             android:textAlignment="center"
-            android:textStyle="bold" />
+            android:textStyle="bold" android:focusable="true"/>
 
         <TextView
             android:id="@+id/columnName"
@@ -71,7 +83,7 @@ android:layout_height="match_parent">
             android:clickable="true"
             android:text="@string/AwardNameTitle"
             android:textAlignment="center"
-            android:textStyle="bold" />
+            android:textStyle="bold" android:focusable="true"/>
 
         <TextView
             android:id="@+id/columnAmount"
@@ -81,7 +93,7 @@ android:layout_height="match_parent">
             android:clickable="true"
             android:text="@string/AwardAmountTitle"
             android:textAlignment="center"
-            android:textStyle="bold" />
+            android:textStyle="bold" android:focusable="true"/>
 
     </LinearLayout>
 
@@ -118,4 +130,9 @@ android:layout_height="match_parent">
     android:choiceMode="multipleChoice" />
 
 
+
 </RelativeLayout>
+
+<include layout="@layout/navigation"/>
+
+</android.support.v4.widget.DrawerLayout>

@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:icon="@drawable/threedots"
-    app:showAsAction="always">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/profileItem"
+            android:checkable="false"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="@string/ProfileText"
+            app:showAsAction="always"></item>
 
-    <item
-        android:id="@+id/profileItem"
-        android:icon="@android:drawable/ic_menu_my_calendar"
-        android:title="@string/ProfileText"></item>
-    <item
-        android:id="@+id/savedAwardItem"
-        android:icon="@android:drawable/ic_menu_save"
-        android:title="@string/SavedAwards"></item>
-    <item
-        android:id="@+id/settingsItem"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="@string/title_activity_settings"></item>
-    <item
-        android:id="@+id/exitItem"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        android:title="@string/ExitLabel"></item>
+        <item
+            android:id="@+id/savedAwardItem"
+            android:checkable="false"
+            android:icon="@drawable/savedicon"
+            android:title="@string/SavedAwardsRight"></item>
+        <item
+            android:id="@+id/settingsItem"
+            android:checkable="false"
+            android:icon="@drawable/settingsicon"
+            android:title="@string/title_activity_settings"></item>
+        <item
+            android:id="@+id/exitItem"
+            android:checkable="false"
+            android:icon="@drawable/logouticon"
+            android:title="@string/ExitLabel"></item>
+    </group>
 </menu>
+

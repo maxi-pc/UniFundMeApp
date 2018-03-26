@@ -1,15 +1,9 @@
 package com.example.maxi.unifundme;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.annotation.SuppressLint;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDelegate;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -19,14 +13,11 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
-    private User profileInfo = null;
-    private DatabaseManager db;
     private Spinner province;
     private Spinner school;
     private RadioGroup studies;
@@ -53,31 +44,13 @@ public class ProfileActivity extends AppCompatActivity {
     private String gpaVal;
     private String[] queryStrings = new String[6];
     private Boolean passMatch = true;
-    private String userName;
-    private String themePref;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @SuppressLint("MissingSuperCall")
+    protected final void onCreate(Bundle savedInstanceState) {
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = prefs.getString("ThemePrefs", "Light");
-        userName = prefs.getString("LoggedUserName", "");
+        super.onCreate(savedInstanceState, R.layout.activity_profile);
 
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        setContentView(R.layout.activity_profile);
-
-        db = new DatabaseManager(this);
-
-
-        profileInfo = db.getUserInfo(new String[] {userName});
-
-
-        if(profileInfo.getProfileSet() == 1)
+        if(userAccount.getProfileSet() == 1)
             LoadProfile();
 
         saveProfileBtn = (Button)findViewById(R.id.saveBtnProfile);
@@ -97,10 +70,10 @@ public class ProfileActivity extends AppCompatActivity {
         aboriginal = (RadioGroup)findViewById(R.id.aborignalRdGrpProfile);
         gpa = (EditText)findViewById(R.id.gpaEditTextProfile);
 
-        province.setSelection(Integer.parseInt(String.format(profileInfo.getProvince().toString())));
-        school.setSelection(1 + Integer.parseInt(String.format(profileInfo.getSchool().toString())));
+        province.setSelection(Integer.parseInt(String.format(userAccount.getProvince().toString())));
+        school.setSelection(1 + Integer.parseInt(String.format(userAccount.getSchool().toString())));
 
-        if(Integer.parseInt(profileInfo.getStudy()) == 1) {
+        if(Integer.parseInt(userAccount.getStudy()) == 1) {
 
             studies.check(R.id.fullTimeRdBtnProfile);
         }
@@ -108,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
             studies.check(R.id.partTimeRdBtnProfile);
         }
 
-        if(Integer.parseInt(profileInfo.getLocality()) == 1) {
+        if(Integer.parseInt(userAccount.getLocality()) == 1) {
 
             student.check(R.id.domesticRdBtnProfile);
         }
@@ -116,47 +89,15 @@ public class ProfileActivity extends AppCompatActivity {
             student.check(R.id.internationalRdBtnProfile);
         }
 
-        if(Integer.parseInt(profileInfo.getAboriginality()) == 1) {
+        if(Integer.parseInt(userAccount.getAboriginality()) == 1) {
 
             aboriginal.check(R.id.yesRdBtnProfile);
         }
         else  {
             aboriginal.check(R.id.noRdBtnProfile);
         }
-        gpa.setText(String.format(profileInfo.getGpa().toString(), "#.##"));
+        gpa.setText(String.format(userAccount.getGpa().toString(), "#.##"));
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the main_menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-
-        switch(item.getItemId()) {
-            case R.id.profileItem:
-                startActivity(new Intent(this, ProfileActivity.class));
-                break;
-            case R.id.savedAwardItem:
-                startActivity(new Intent(this, SavedAwardsActivity.class));
-                break;
-            case R.id.settingsItem:
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
-            case R.id.exitItem:
-                finish();
-                moveTaskToBack(true);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-        return true;
     }
 
     public void validationCheck() {
@@ -293,11 +234,11 @@ public class ProfileActivity extends AppCompatActivity {
             passwordTwoEditEdit.getText().clear();
         }
         else{
-               profileInfo.setProfileSet(1);
+            userAccount.setProfileSet(1);
 
             setProfileValues();
 
-            db.UpdateAccount(profileInfo);
+            db.UpdateAccount(userAccount);
                Toast.makeText(ProfileActivity.this, "Account Updated Successfully", Toast.LENGTH_SHORT).show();
         }
     }
@@ -337,12 +278,12 @@ public class ProfileActivity extends AppCompatActivity {
        Double gpaNum = Double.parseDouble( gpa.getText().toString());
 
         if(passMatch == true && !passwordOne.isEmpty() || !passwordTwo.isEmpty())
-            profileInfo.setPassword(passwordOne);
-        profileInfo.setProvince(provinceInt);
-        profileInfo.setSchool(schoolInt);
-        profileInfo.setStudy(study);
-        profileInfo.setLocality(locality);
-        profileInfo.setAboriginality(aboriginality);
-        profileInfo.setGpa(gpaNum);
+            userAccount.setPassword(passwordOne);
+        userAccount.setProvince(provinceInt);
+        userAccount.setSchool(schoolInt);
+        userAccount.setStudy(study);
+        userAccount.setLocality(locality);
+        userAccount.setAboriginality(aboriginality);
+        userAccount.setGpa(gpaNum);
     }
 }

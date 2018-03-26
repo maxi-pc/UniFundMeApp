@@ -5,37 +5,22 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-        <!-- Header aligned to top -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <!-- include your toolbar layout-->
-            <include
-                layout="@layout/toolbar"
-                 />
-            <!-- Let's add fragment -->
-            <FrameLayout
-                android:id="@+id/frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+             />
 
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -69,7 +54,7 @@
                     android:clickable="true"
                     android:text="@string/WelcomeTitle"
                     android:textAlignment="viewStart"
-                    android:textStyle="bold" />
+                    android:textStyle="bold" android:layout_marginStart="10dp" android:focusable="true"/>
 
                 <TextView
                     android:id="@+id/profileAlertMessage"
@@ -84,32 +69,17 @@
 
         </LinearLayout>
 
-        <!-- Footer aligned to bottom -->
-
-        <!-- Scrollable Item below header and above footer -->
-
-
         <ListView
             android:id="@+id/newsListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/header"
             android:choiceMode="multipleChoice" />
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <!--
-         Navigation view to show the menu items
-    -->
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        app:menu="@menu/left_menu" />
+    <include layout="@layout/navigation" />
+
 </android.support.v4.widget.DrawerLayout>
 
 

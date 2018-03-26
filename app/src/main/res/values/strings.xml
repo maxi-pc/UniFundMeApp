@@ -99,4 +99,14 @@
     <string name="QuickSearch">Quick Search</string>
     <string name="ProfileText">Profile</string>
     <string name="ExitLabel">Exit</string>
+    <string name="SavedAwardsRight">Saved Awards</string>
+    <string name="NewPassAgain">Password Again</string>
+    <string name="SplashSettings">Splash Settings</string>
+    <string name="SplashOn">Enabled</string>
+    <string name="SplashOff">Disabled</string>
+    <string name="LoginSettings">Login Settings</string>
+    <string name="ForgetMeButtonText">Forget UserName</string>
+    <string name="RememberMeLabel">Remember me</string>
+    <string name="GoogleLoginDesc">Google Login</string>
+    <string name="facebookLoginDesc">Facebook Login</string>
 </resources>

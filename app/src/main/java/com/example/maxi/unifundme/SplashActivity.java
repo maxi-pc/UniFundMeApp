@@ -1,5 +1,6 @@
 package com.example.maxi.unifundme;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -11,54 +12,40 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     private CheckBox dontShow;
     private ImageView continueImage;
-    private String skipSplash;
-    private String themePref;
+ //   private String skipSplash;
+  //  private String themePref;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @SuppressLint("MissingSuperCall")
+    protected final void onCreate(Bundle savedInstanceState) {
+        showToolbar = false;
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = prefs.getString("ThemePrefs", "Light");
-        skipSplash = prefs.getString("SkipSplash", "NO");
+        super.onCreate(savedInstanceState, R.layout.activity_splash);
 
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        setContentView(R.layout.activity_splash);
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         dontShow = (CheckBox) findViewById(R.id.dontShowCheckBox);
         continueImage = (ImageView) findViewById(R.id.continueBtn);
 
-        if (skipSplash.equals("NO")) {
+        if (skipSplash.equals("enable") || userName.equals("") ) {
 
             continueImage.setOnClickListener(view -> {
                 if(dontShow.isChecked())
                 {
-                    skipSplash = "YES";
+                    skipSplash = "disable";
                 }
                 StoreSharedPrefs();
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();
             });
         }
-        else if(skipSplash.equals("YES")){
+        else if(skipSplash.equals("disable")){
+            //finishAffinity();
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             finish();
         }
-    }
-
-    private void StoreSharedPrefs(){
-        final SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("SkipSplash", skipSplash.toString());
-        editor.commit();
     }
 }

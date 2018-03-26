@@ -1,22 +1,17 @@
 package com.example.maxi.unifundme;
 
-import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,45 +21,40 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
-    //private SQLiteDatabase db;
     private TextView registerTxt;
     private Button loginBtn;
     private EditText usernameEditText;
     private EditText passwordEditExit;
-    private String username;
+  //  private String userName;
     private String password;
-    private DatabaseManager db;
     private ImageView googleBtn;
     private ImageView facebookBtn;
-    private String userName;
-    private String themePref;
+  //  private String savedUsername;
+    private CheckBox rememberMe;
 
 
+ //   @Override
+    @SuppressLint("MissingSuperCall")
+    protected final void onCreate(Bundle savedInstanceState) {
+        showToolbar = false;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState, R.layout.activity_login);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = prefs.getString("ThemePrefs", "Light");
-        userName = prefs.getString("LoggedUserName", "");
+    //    final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    //    savedUsername = prefs.getString("savedUsername", "");
 
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        setContentView(R.layout.activity_login);
-
+        rememberMe = (CheckBox)findViewById(R.id.remeberMeChkBox);
         usernameEditText = (EditText)findViewById(R.id.usernameLoginEditText);
         passwordEditExit = (EditText)findViewById(R.id.passwordLoginEditText);
 
-        usernameEditText.setText(userName);
+        if(!savedUsername.equals(""))
+            rememberMe.setChecked(true);
 
-        //DatabaseManager();
-         db = new DatabaseManager(this);
+        usernameEditText.setText(savedUsername);
 
         registerTxt = (TextView)findViewById(R.id.registerTextView);
 
@@ -100,12 +90,11 @@ public class LoginActivity extends AppCompatActivity {
         String one, two, three, error;
         usernameEditText = (EditText)findViewById(R.id.usernameLoginEditText);
         passwordEditExit = (EditText)findViewById(R.id.passwordLoginEditText);
-        username = usernameEditText.getText().toString();
+        userName = usernameEditText.getText().toString();
         password = passwordEditExit.getText().toString();
 
-        boolean checkUser = db.valueChecker("users", "username", new String[] {username});
-     //   boolean checkPass = db.valueChecker("users", "email", new String[] {password});
-        boolean checkMatch = db.checkMatch("users","username", "password", new String[] { username, password });
+        boolean checkUser = db.valueChecker("users", "username", new String[] {userName});
+        boolean checkMatch = db.checkMatch("users","username", "password", new String[] { userName, password });
 
         if (checkUser == true) {
             one = "Username doesn't exists\n";
@@ -133,18 +122,37 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, three, Toast.LENGTH_SHORT).show();
         }
         else{
-            StoreSharedPrefs();
+            savedUsername = usernameEditText.getText().toString();
+            if(rememberMe.isChecked())
+            StoreUsername();
+            else{
+                savedUsername = "";
+                StoreUsername();
+            }
+
+            SetLoggedInUser();
+
+
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
-         //   passwordEditExit.getText().clear();
         }
     }
 
-    private void StoreSharedPrefs(){
+    public void StoreUsername(){
         final SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("LoggedUserName", username.toString());
+
+        editor.putString("savedUsername", savedUsername);
+        editor.commit();
+    }
+
+    public void SetLoggedInUser(){
+        final SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString("LoggedUserName", userName);
         editor.commit();
     }
 

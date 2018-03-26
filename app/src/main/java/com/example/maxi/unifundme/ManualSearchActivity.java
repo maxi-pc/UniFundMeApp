@@ -1,14 +1,8 @@
 package com.example.maxi.unifundme;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDelegate;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -17,12 +11,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ManualSearchActivity extends AppCompatActivity {
+public class ManualSearchActivity extends BaseActivity {
 
     private Spinner province;
     private Spinner school;
@@ -45,65 +37,20 @@ public class ManualSearchActivity extends AppCompatActivity {
     // gpa value
     private String gpaVal;
     private String[] queryStrings = new String[6];
-    private String themePref;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @SuppressLint("MissingSuperCall")
+    protected final void onCreate(Bundle savedInstanceState) {
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = prefs.getString("ThemePrefs", "Light");
-
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        setContentView(R.layout.activity_manual_search);
+        super.onCreate(savedInstanceState, R.layout.activity_manual_search);
 
         findAwards = (Button)findViewById(R.id.findAwardsBtn);
 
         findAwards.setOnClickListener(view -> {
-            try {
-                validationCheck();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            validationCheck();
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the main_menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch(item.getItemId()) {
-            case R.id.profileItem:
-                startActivity(new Intent(this, ProfileActivity.class));
-                break;
-            case R.id.savedAwardItem:
-                startActivity(new Intent(this, SavedAwardsActivity.class));
-                break;
-            case R.id.settingsItem:
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
-            case R.id.exitItem:
-                finish();
-                moveTaskToBack(true);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-        return true;
-    }
-
-    public void validationCheck()throws IOException {
+    public void validationCheck() {
 
 
         province = (Spinner) findViewById(R.id.provinceSpinner);
@@ -184,8 +131,6 @@ public class ManualSearchActivity extends AppCompatActivity {
             }
 
         }
-        // change to toast?
-      //  System.out.println(tf_txtFieldGPA.getText().toString());
 
         error = four + five + one + two + three + six + seven + eight + nine;
         if (studies.getCheckedRadioButtonId() == -1 || student.getCheckedRadioButtonId() == -1 ||
@@ -198,11 +143,7 @@ public class ManualSearchActivity extends AppCompatActivity {
 
         }
         else {
-
             setValuesOfSearch();
-          //  System.out.println("GOOD");
-         //   Toast.makeText(ManualSearchActivity.this, "SUCCESS!", Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -239,11 +180,7 @@ public class ManualSearchActivity extends AppCompatActivity {
         provinceInt = Integer.toString(province.getSelectedItemPosition());
         schoolInt = Integer.toString(school.getSelectedItemPosition() - 1);
 
-
-        //Toast.makeText(ManualSearchActivity.this, schoolInt, Toast.LENGTH_LONG).show();
         gpaVal = gpa.getText().toString();
-
-  //      Toast.makeText(ManualSearchActivity.this, study + " " + locality + " " + aboriginality + " " + provinceInt + " " + schoolInt + " " + gpaVal, Toast.LENGTH_LONG).show();
 
         queryStrings[0] = provinceInt;
         queryStrings[1] = schoolInt;

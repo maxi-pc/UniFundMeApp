@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewSavedDataScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
     <!-- Header aligned to top -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/toolbar"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -28,10 +42,11 @@
 
             <TextView
                 android:id="@+id/savedAwardsFoundTxtView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:textAlignment="viewStart"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -50,7 +65,7 @@
                 android:clickable="true"
                 android:text="@string/awardSourceTitle"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold" android:focusable="true"/>
 
             <TextView
                 android:id="@+id/savedColumnType"
@@ -60,7 +75,7 @@
                 android:clickable="true"
                 android:text="@string/AwardTypeTitle"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold" android:focusable="true"/>
 
             <TextView
                 android:id="@+id/savedColumnName"
@@ -71,7 +86,7 @@
                 android:clickable="true"
                 android:text="@string/AwardNameTitle"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold" android:focusable="true"/>
 
             <TextView
                 android:id="@+id/savedColumnAmount"
@@ -81,7 +96,7 @@
                 android:clickable="true"
                 android:text="@string/AwardAmountTitle"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold" android:focusable="true"/>
 
         </LinearLayout>
 
@@ -119,3 +134,8 @@
 
 
 </RelativeLayout>
+
+    <include
+        layout="@layout/navigation" />
+
+</android.support.v4.widget.DrawerLayout>

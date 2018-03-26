@@ -1,61 +1,42 @@
 package com.example.maxi.unifundme;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
-import android.util.Patterns;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private String email;
     private String username;
     private String password;
-    EditText emailText;
-    EditText userText;
-    EditText passText;
-    Button registerBtn;
-    Button cancelBtn;
-    DatabaseManager db;
+    private EditText emailText;
+    private EditText userText;
+    private EditText passText;
+    private Button registerBtn;
+    private Button cancelBtn;
     private EditText passwordOneEditText;
     private EditText passwordTwoEditEdit;
     private String passwordOne;
     private String passwordTwo;
-    private String themePref;
 
     private String[] userInput = new String[1];
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @SuppressLint("MissingSuperCall")
+    protected final void onCreate(Bundle savedInstanceState) {
+        showToolbar = false;
 
-        // change theme based on user settings
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = prefs.getString("ThemePrefs", "Light");
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        super.onCreate(savedInstanceState, R.layout.activity_register);
 
-        setContentView(R.layout.activity_register);
-
-        db = new DatabaseManager(this);
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         registerBtn = (Button)findViewById(R.id.registerBtn);
         cancelBtn = (Button)findViewById(R.id.cancelBtn);
@@ -73,10 +54,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     cancelBtn.setOnClickListener(view -> {
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+        finish();
     });
     }
-
-
 
     public final static boolean CheckEmail(CharSequence email)
     {
@@ -106,8 +86,6 @@ public class RegisterActivity extends AppCompatActivity {
         passwordTwo = passwordTwoEditEdit.getText().toString().trim();
 
         String one, two, three, four = "", five = "", error;
-
-
 
         if (CheckEmail(emailText.getText()) == false) {
             one = "Email Check\n";
@@ -150,16 +128,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         }
         else {
-
-         //   setValuesOfSearch();
                CheckDatabase();
-             // Toast.makeText(RegisterActivity.this, "SUCCESS!", Toast.LENGTH_LONG).show();
-
         }
     }
 
     private void CheckDatabase() {
-        // check name
+
         String one, two, error;
         boolean checkUser = db.valueChecker("users", "username", new String[] {username});
         boolean checkEmail = db.valueChecker("users", "email", new String[] {email});
@@ -178,13 +152,10 @@ public class RegisterActivity extends AppCompatActivity {
         error = one + two;
         if(checkUser == false || checkEmail == false)
         {
-
             Toast.makeText(RegisterActivity.this, error, Toast.LENGTH_SHORT).show();
         }
         else
         {
-            //Toast.makeText(RegisterActivity.this, "YES CAN INSERT INTO DB", Toast.LENGTH_SHORT).show();
-
             User myAccount = new User(username, email, passwordOne);
             db.CreateUser(myAccount);
             Toast.makeText(RegisterActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();

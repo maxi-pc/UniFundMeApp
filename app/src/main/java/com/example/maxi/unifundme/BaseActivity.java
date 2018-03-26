@@ -1,5 +1,6 @@
 package com.example.maxi.unifundme;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,15 +9,16 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by Maxi on 2018-03-25.
@@ -24,12 +26,16 @@ import android.widget.Toast;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    public DrawerLayout dLayout;
-    public String themePref;
-    public DatabaseManager db;
-    public String userName;
-    public User userAccount;
-    public Toolbar mToolbar;
+    protected DrawerLayout dLayout;
+    protected String themePref;
+    protected DatabaseManager db;
+    protected String userName;
+    protected String savedUsername;
+    protected User userAccount;
+    protected String skipSplash;
+    protected String alertSounds;
+    protected Toolbar mToolbar;
+    protected boolean showToolbar = true;
 
 
     protected final void onCreate(Bundle savedInstanceState, int layoutId) {
@@ -38,40 +44,32 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         themePref = prefs.getString("ThemePrefs", "Light");
-
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        userName = prefs.getString("LoggedUserName", "");
+        alertSounds = prefs.getString("AlertSounds","OFF");
+        savedUsername = prefs.getString("savedUsername", "");
+        skipSplash = prefs.getString("SkipSplash", "enabled");
 
         db = new DatabaseManager(this);
 
 
-        userName = prefs.getString("LoggedUserName", "");
+
         userAccount = db.getUserInfo(new String[] {userName});
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
 
-        setSupportActionBar(mToolbar);
+        if(showToolbar == true) {
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(mToolbar);
 
-        assert mToolbar != null;
-        mToolbar.setNavigationIcon(R.drawable.mobilebars);
+            assert mToolbar != null;
+            mToolbar.setNavigationIcon(R.drawable.mobilebars);
 
-        mToolbar.setOverflowIcon(ContextCompat.getDrawable(getApplicationContext(),R.drawable.threedots));
+            mToolbar.setOverflowIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.threedotsthin));
 
-        mToolbar.setNavigationOnClickListener(view -> dLayout.openDrawer(Gravity.LEFT));
-        setNavigationDrawer();
+            mToolbar.setNavigationOnClickListener(view -> dLayout.openDrawer(Gravity.LEFT));
+            setNavigationDrawer();
+        }
     }
 
     public void setNavigationDrawer() {
-
-        DatabaseManager db = new DatabaseManager(this);
-        User currentUser;
-        String userName;
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        userName = prefs.getString("LoggedUserName", "");
-
-        currentUser = db.getUserInfo(new String[] {userName});
 
         dLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
@@ -83,9 +81,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MainActivity.class));
             } else if (itemId == R.id.left_quick_search)
             {
-                if(currentUser.getProfileSet() == 0)
+                if(userAccount.getProfileSet() == 0)
                 {
-                    Toast.makeText(this, "Must setup account for this feature", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Must setup profile for this feature", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -112,15 +110,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        DatabaseManager db = new DatabaseManager(this);
-        User currentUser;
-        String userName;
-
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        userName = prefs.getString("LoggedUserName", "");
-
-        currentUser = db.getUserInfo(new String[] {userName});
-
         switch(item.getItemId()) {
             case R.id.profileItem:
                 startActivity(new Intent(this, ProfileActivity.class));
@@ -129,12 +118,18 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SavedAwardsActivity.class));
                 break;
             case R.id.settingsItem:
+
                 startActivity(new Intent(this, SettingActivity.class));
                 break;
+
             case R.id.exitItem:
-                finish();
+
+                Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 moveTaskToBack(true);
                 break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -143,11 +138,32 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("RestrictedApi")
+    @Override
+    protected boolean onPrepareOptionsPanel(View view, Menu menu) {
+        if (menu != null) {
+            if (menu.getClass().equals(MenuBuilder.class)) {
+                try {
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                } catch (Exception e) {
+                    Log.e(getClass().getSimpleName(), "onMenuOpened...can't add icons to menu items", e);
+                }
+            }
+        }
+        return super.onPrepareOptionsPanel(view, menu);
+    }
+
     public void StoreSharedPrefs(){
         final SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
+
         editor.putString("ThemePrefs", themePref);
+        editor.putString("AlertSounds", alertSounds);
+        editor.putString("SkipSplash", skipSplash);
         editor.commit();
     }
 }

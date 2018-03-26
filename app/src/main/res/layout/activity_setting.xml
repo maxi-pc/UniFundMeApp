@@ -22,11 +22,7 @@
             android:orientation="vertical">
             <!-- include your toolbar layout-->
             <include layout="@layout/toolbar" />
-            <!-- Let's add fragment -->
-            <FrameLayout
-                android:id="@+id/frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+
         </LinearLayout>
 
         <Switch
@@ -40,13 +36,13 @@
             android:text="@string/AlertsSwitch"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.933"
+            app:layout_constraintHorizontal_bias="0.934"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.057" />
+            app:layout_constraintVertical_bias="0.118" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/buildLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -94,7 +90,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/themeSettingsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -108,10 +104,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.329" />
+            app:layout_constraintVertical_bias="0.268" />
+
+        <TextView
+            android:id="@+id/splashSettingsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/SplashSettings"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.442" />
 
         <RadioGroup
-            android:id="@+id/radioGroup"
+            android:id="@+id/radioGroupTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -124,26 +138,26 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.425"><![CDATA[>
+            app:layout_constraintVertical_bias="0.348">
 
-        ]]>
-
-        <RadioButton
-            android:id="@+id/settingsRdBtnLight"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_weight="1"
-            android:text="@string/DayMode" />
+            <RadioButton
+                android:id="@+id/settingsRdBtnLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginStart="50dp"
+                android:layout_weight="1"
+                android:text="@string/DayMode" />
 
             <TextView
                 android:id="@+id/spacer"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="                                   " />
+                android:layout_weight="1" />
 
             <RadioButton
                 android:id="@+id/settingsRdBtnDark"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/NightMode" />
@@ -151,7 +165,7 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/settingsTitleLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -164,16 +178,50 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.017" />
+            app:layout_constraintVertical_bias="0.109" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupSplash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.533">
+
+            <RadioButton
+                android:id="@+id/splashRdBtnEnabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginStart="50dp"
+                android:layout_weight="1"
+                android:text="@string/SplashOn" />
+
+            <TextView
+                android:id="@+id/spacerTwo"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/splashRdBtnDisabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/SplashOff" />
+
+        </RadioGroup>
 
     </android.support.constraint.ConstraintLayout>
-    <!--
-         Navigation view to show the menu items
-    -->
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        app:menu="@menu/left_menu" />
+
+    <include layout="@layout/navigation" />
+
 </android.support.v4.widget.DrawerLayout>

@@ -1,5 +1,6 @@
 package com.example.maxi.unifundme;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -25,11 +26,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ViewDataActivity extends AppCompatActivity {
+public class ViewDataActivity extends BaseActivity {
 
     private ArrayAdapter arrayAdapter;
     private ArrayList<Award> awards = new ArrayList<>();
-    private ArrayList<Award> savedAwards =  new ArrayList<>();
     private TextView sourceCol;
     private TextView typeCol;
     private TextView nameCol;
@@ -42,35 +42,14 @@ public class ViewDataActivity extends AppCompatActivity {
    private String[] myQueryStringsAnySchool = new String[5];
    private ListView awardsListView;
    private Button saveBtn;
-   private User currentUser;
    private TextView awardsFound;
    private String searchType;
-   private DatabaseManager db;
-   private String userName;
-   private String themePref;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        // change theme based on user settings
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        themePref = prefs.getString("ThemePrefs", "Light");
-        userName = prefs.getString("LoggedUserName", "");
+    @SuppressLint("MissingSuperCall")
+    protected final void onCreate(Bundle savedInstanceState) {
 
-        if(themePref.equals("Light"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        else if(themePref.equals("Dark"))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        setContentView(R.layout.activity_view_data);
-
-        // create instance of DB manager
-        db = new DatabaseManager(this);
-
-        savedAwards = db.getSavedAwards(new String[]{userName});
-
-        currentUser = db.getUserInfo(new String[] {userName});
+        super.onCreate(savedInstanceState, R.layout.activity_view_data);
 
        Intent intent = getIntent();
 
@@ -87,8 +66,6 @@ public class ViewDataActivity extends AppCompatActivity {
         awardsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         saveBtn = (Button)findViewById(R.id.saveAwardsBtn);
-
-
 
         arrayAdapter = new AwardAdapter(ViewDataActivity.this,awards);
         awardsListView.setAdapter(arrayAdapter);
@@ -193,37 +170,6 @@ public class ViewDataActivity extends AppCompatActivity {
        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the main_menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch(item.getItemId()) {
-            case R.id.profileItem:
-                startActivity(new Intent(this, ProfileActivity.class));
-                break;
-            case R.id.savedAwardItem:
-                startActivity(new Intent(this, SavedAwardsActivity.class));
-                break;
-            case R.id.settingsItem:
-                startActivity(new Intent(this, SettingActivity.class));
-                break;
-            case R.id.exitItem:
-                finish();
-                moveTaskToBack(true);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-        return true;
-    }
-
     private void searchManual() {
         int school = Integer.parseInt(myQueryStrings[1]);
 
@@ -257,7 +203,7 @@ public class ViewDataActivity extends AppCompatActivity {
     }
 
     private void searchAuto() {
-        int school = Integer.parseInt(currentUser.getSchool());
+        int school = Integer.parseInt(userAccount.getSchool());
 
 
         // if school type is at position of "Any School" then display anySchool data query;
@@ -265,11 +211,11 @@ public class ViewDataActivity extends AppCompatActivity {
             // clear previous awards
             awards.clear();
             // change userInput minute school
-            myQueryStringsAnySchool[0] = currentUser.getProvince();
-            myQueryStringsAnySchool[1] = currentUser.getStudy();
-            myQueryStringsAnySchool[2] = currentUser.getLocality();
-            myQueryStringsAnySchool[3] = currentUser.getAboriginality();
-            myQueryStringsAnySchool[4] = currentUser.getGpa().toString();
+            myQueryStringsAnySchool[0] = userAccount.getProvince();
+            myQueryStringsAnySchool[1] = userAccount.getStudy();
+            myQueryStringsAnySchool[2] = userAccount.getLocality();
+            myQueryStringsAnySchool[3] = userAccount.getAboriginality();
+            myQueryStringsAnySchool[4] = userAccount.getGpa().toString();
 
             // add all results from query method
             awards.addAll(db.getAnySchoolData(myQueryStringsAnySchool));
@@ -279,7 +225,7 @@ public class ViewDataActivity extends AppCompatActivity {
 
         } else if (school >= 1) {
             awards.clear();
-            awards.addAll(db.getDefaultData(new String[] {currentUser.getProvince(), currentUser.getSchool(), currentUser.getStudy(), currentUser.getLocality(), currentUser.getAboriginality(), currentUser.getGpa().toString()}));
+            awards.addAll(db.getDefaultData(new String[] {userAccount.getProvince(), userAccount.getSchool(), userAccount.getStudy(), userAccount.getLocality(), userAccount.getAboriginality(), userAccount.getGpa().toString()}));
             arrayAdapter.notifyDataSetChanged();
             awardsFound.setText(Integer.toString(awards.size()));
 

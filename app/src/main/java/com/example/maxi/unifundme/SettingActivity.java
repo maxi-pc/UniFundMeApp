@@ -83,22 +83,27 @@ public class SettingActivity extends BaseActivity {
             recreate();
         });
 
+        // click listener for radio button Light
+        nightModeRdBtn.setOnClickListener(view -> {
+            Toast.makeText(SettingActivity.this, "Theme set to Night Mode", Toast.LENGTH_SHORT).show();
+            themePref = "Dark";
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            StoreSharedPrefs();
+            recreate();
+        });
+
         // click listener for radio button dark
         splashEnable.setOnClickListener(view -> {
             Toast.makeText(SettingActivity.this, "Splash set to enabled", Toast.LENGTH_SHORT).show();
             skipSplash = "enable";
-
             StoreSharedPrefs();
-            recreate();
         });
 
         // click listener for radio button splash enable
         splashDisable.setOnClickListener(view -> {
             Toast.makeText(SettingActivity.this, "Splash set to disabled", Toast.LENGTH_SHORT).show();
             skipSplash = "disable";
-
             StoreSharedPrefs();
-            recreate();
         });
     }
 

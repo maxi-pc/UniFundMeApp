@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TestGit.iml" filepath="$PROJECT_DIR$/.idea/modules/TestGit.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/TestGit.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/TestGit.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UniFundMeApp.iml" filepath="$PROJECT_DIR$/.idea/modules/UniFundMeApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/UniFundMeApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/UniFundMeApp.app.iml" />
     </modules>
   </component>
 </project>
